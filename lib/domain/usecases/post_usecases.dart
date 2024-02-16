@@ -8,7 +8,7 @@ class PostUseCases {
   PostUseCases();
   final PostRepository postRepository = PostRepositoryImpl();
 
-  Future<Either<Failure, PostDTO>> getPost() async {
+  Future<Either<Failure, List<PostDTO>>> getPost() async {
     return postRepository.getPostFromDatasource();
   }
 }

@@ -10,15 +10,9 @@ class PostState with _$PostState {
     @Default(false) bool hasReachedMax,
   }) = _PostState;
 
-  factory PostState.copyWith(
-    PostState oldState, {
-    PostStatus? status,
-    List<PostDTO>? posts,
-    bool? hasReachedMax,
-  }) =>
-      _PostState(
-        status: status ?? oldState.status,
-        posts: posts ?? oldState.posts,
-        hasReachedMax: hasReachedMax ?? oldState.hasReachedMax,
+  factory PostState.initial() => const PostState(
+        hasReachedMax: false,
+        posts: [],
+        status: PostStatus.initial,
       );
 }

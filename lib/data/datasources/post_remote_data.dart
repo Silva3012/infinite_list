@@ -5,13 +5,13 @@ import 'package:infinite_list/data/exceptions/exceptions.dart';
 import 'package:infinite_list/data/models/post_model.dart';
 
 abstract class PostRemoteDatasource {
-  Future<PostDTO> getPostFromApi([int startIndex = 0]);
+  Future<List<PostDTO>> getPostFromApi([int startIndex = 0]);
 }
 
 class PostRemoteDatasourceImpl implements PostRemoteDatasource {
   final client = http.Client();
   @override
-  Future<PostDTO> getPostFromApi([int startIndex = 0]) async {
+  Future<List<PostDTO>> getPostFromApi([int startIndex = 0]) async {
     const postLimit = 20;
     final response = await client.get(
       Uri.https(
@@ -24,7 +24,9 @@ class PostRemoteDatasourceImpl implements PostRemoteDatasource {
       throw ServerException();
     } else {
       final responseBody = json.decode(response.body);
-      return PostDTO.fromJson(responseBody);
+      // print(responseBody);
+      print(responseBody.map((post) => PostDTO.fromJson(post)).toList());
+      return responseBody.map((post) => PostDTO.fromJson(post)).toList();
     }
   }
 }

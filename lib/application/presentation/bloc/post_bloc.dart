@@ -8,13 +8,12 @@ part 'post_event.dart';
 part 'post_state.dart';
 part 'post_bloc.freezed.dart';
 
-const int kPageSize = 20;
-
 class PostBloc extends Bloc<PostEvent, PostState> {
-  PostBloc() : super(const PostState()) {
+  PostBloc() : super(PostState.initial()) {
     final PostUseCases postUseCases = PostUseCases();
     on<PostEvent>((event, emit) async {
-      event.map(postFetched: (event) async {
+      // print('Recevied event: $event');
+      await event.map(postFetched: (event) async {
         // check if already reached max before loading
         if (state.hasReachedMax) return;
 
@@ -22,15 +21,19 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         emit(state.copyWith(status: PostStatus.loading));
 
         final failureOrPosts = await postUseCases.getPost();
+        print(failureOrPosts.isRight());
 
-        emit(failureOrPosts.fold(
-            (failure) => state.copyWith(status: PostStatus.failure),
-            (posts) => state.copyWith(
-                  status: PostStatus.success,
-                  posts: posts.isEmpty ? state.posts : List.of(state.posts)
-                    ..addAll(posts as Iterable<PostDTO>),
-                  hasReachedMax: true,
-                )));
+        failureOrPosts.fold((failure) {
+          // print('$failure');
+          emit(state.copyWith(status: PostStatus.failure));
+        }, (posts) {
+          emit(state.copyWith(
+            status: PostStatus.success,
+            posts: posts.isEmpty ? state.posts : List.of(state.posts)
+              ..addAll(posts),
+            hasReachedMax: false,
+          ));
+        });
       });
     });
   }

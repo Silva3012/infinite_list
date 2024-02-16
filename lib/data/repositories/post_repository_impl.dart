@@ -9,9 +9,10 @@ class PostRepositoryImpl implements PostRepository {
   final PostRemoteDatasource remotePostDatasource = PostRemoteDatasourceImpl();
 
   @override
-  Future<Either<Failure, PostDTO>> getPostFromDatasource() async {
+  Future<Either<Failure, List<PostDTO>>> getPostFromDatasource() async {
     try {
       final result = await remotePostDatasource.getPostFromApi();
+      print(result.length);
       return right(result);
     } on ServerException catch (_) {
       return left(ServerFailure());
