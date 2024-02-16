@@ -6,8 +6,7 @@ import 'package:infinite_list/domain/failures/failures.dart';
 import 'package:infinite_list/domain/repositories/post_repository.dart';
 
 class PostRepositoryImpl implements PostRepository {
-  PostRepositoryImpl({required this.remotePostDatasource});
-  final PostRemoteDatasource remotePostDatasource;
+  final PostRemoteDatasource remotePostDatasource = PostRemoteDatasourceImpl();
 
   @override
   Future<Either<Failure, PostDTO>> getPostFromDatasource() async {

@@ -11,8 +11,8 @@ part 'post_bloc.freezed.dart';
 const int kPageSize = 20;
 
 class PostBloc extends Bloc<PostEvent, PostState> {
-  final PostUseCases postUseCases;
-  PostBloc({required this.postUseCases}) : super(const PostState()) {
+  PostBloc() : super(const PostState()) {
+    final PostUseCases postUseCases = PostUseCases();
     on<PostEvent>((event, emit) async {
       event.map(postFetched: (event) async {
         // check if already reached max before loading
