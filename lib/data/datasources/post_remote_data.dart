@@ -9,9 +9,7 @@ abstract class PostRemoteDatasource {
 }
 
 class PostRemoteDatasourceImpl implements PostRemoteDatasource {
-  final http.Client client;
-
-  PostRemoteDatasourceImpl({required this.client});
+  final client = http.Client();
   @override
   Future<PostDTO> getPostFromApi([int startIndex = 0]) async {
     const postLimit = 20;

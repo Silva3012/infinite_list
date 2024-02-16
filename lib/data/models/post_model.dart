@@ -33,4 +33,6 @@ class PostDTO with _$PostDTO {
       "body": body,
     };
   }
+
+  bool get isEmpty => id == null && title == null && body == null;
 }
