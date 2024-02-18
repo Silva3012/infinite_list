@@ -6,13 +6,15 @@ import 'package:infinite_list/domain/failures/failures.dart';
 import 'package:infinite_list/domain/repositories/post_repository.dart';
 
 class PostRepositoryImpl implements PostRepository {
-  final PostRemoteDatasource remotePostDatasource = PostRemoteDatasourceImpl();
+  PostRepositoryImpl({required this.remotePostDatasource});
+  final PostRemoteDatasource remotePostDatasource;
 
   @override
   Future<Either<Failure, List<PostDTO>>> getPostFromDatasource() async {
     try {
-      final result = await remotePostDatasource.getPostFromApi();
-      print(result.length);
+      final result = await remotePostDatasource.getPostFromApi(
+          startIndex: 0, lastPostId: 0);
+      print(result);
       return right(result);
     } on ServerException catch (_) {
       return left(ServerFailure());

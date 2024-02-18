@@ -5,28 +5,34 @@ import 'package:infinite_list/data/exceptions/exceptions.dart';
 import 'package:infinite_list/data/models/post_model.dart';
 
 abstract class PostRemoteDatasource {
-  Future<List<PostDTO>> getPostFromApi([int startIndex = 0]);
+  Future<List<PostDTO>> getPostFromApi(
+      {required int startIndex, required int lastPostId});
 }
 
 class PostRemoteDatasourceImpl implements PostRemoteDatasource {
   final client = http.Client();
   @override
-  Future<List<PostDTO>> getPostFromApi([int startIndex = 0]) async {
+  Future<List<PostDTO>> getPostFromApi(
+      {required int startIndex, required int lastPostId}) async {
     const postLimit = 20;
     final response = await client.get(
       Uri.https(
         'jsonplaceholder.typicode.com',
         '/posts',
-        <String, String>{'_start': '$startIndex', '_limit': '$postLimit'},
+        <String, String>{
+          '_start': '$startIndex',
+          '_limit': '$postLimit',
+          '_after': '$lastPostId'
+        },
       ),
     );
     if (response.statusCode != 200) {
       throw ServerException();
     } else {
-      final responseBody = json.decode(response.body);
-      // print(responseBody);
-      print(responseBody.map((post) => PostDTO.fromJson(post)).toList());
-      return responseBody.map((post) => PostDTO.fromJson(post)).toList();
+      final List<dynamic> responseBody = json.decode(response.body);
+      final List<PostDTO> posts =
+          responseBody.map((postJson) => PostDTO.fromJson(postJson)).toList();
+      return posts;
     }
   }
 }

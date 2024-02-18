@@ -168,6 +168,7 @@ mixin _$PostState {
   PostStatus get status => throw _privateConstructorUsedError;
   List<PostDTO> get posts => throw _privateConstructorUsedError;
   bool get hasReachedMax => throw _privateConstructorUsedError;
+  int? get lastPostId => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $PostStateCopyWith<PostState> get copyWith =>
@@ -179,7 +180,11 @@ abstract class $PostStateCopyWith<$Res> {
   factory $PostStateCopyWith(PostState value, $Res Function(PostState) then) =
       _$PostStateCopyWithImpl<$Res, PostState>;
   @useResult
-  $Res call({PostStatus status, List<PostDTO> posts, bool hasReachedMax});
+  $Res call(
+      {PostStatus status,
+      List<PostDTO> posts,
+      bool hasReachedMax,
+      int? lastPostId});
 }
 
 /// @nodoc
@@ -198,6 +203,7 @@ class _$PostStateCopyWithImpl<$Res, $Val extends PostState>
     Object? status = null,
     Object? posts = null,
     Object? hasReachedMax = null,
+    Object? lastPostId = freezed,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -212,6 +218,10 @@ class _$PostStateCopyWithImpl<$Res, $Val extends PostState>
           ? _value.hasReachedMax
           : hasReachedMax // ignore: cast_nullable_to_non_nullable
               as bool,
+      lastPostId: freezed == lastPostId
+          ? _value.lastPostId
+          : lastPostId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -224,7 +234,11 @@ abstract class _$$PostStateImplCopyWith<$Res>
       __$$PostStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({PostStatus status, List<PostDTO> posts, bool hasReachedMax});
+  $Res call(
+      {PostStatus status,
+      List<PostDTO> posts,
+      bool hasReachedMax,
+      int? lastPostId});
 }
 
 /// @nodoc
@@ -241,6 +255,7 @@ class __$$PostStateImplCopyWithImpl<$Res>
     Object? status = null,
     Object? posts = null,
     Object? hasReachedMax = null,
+    Object? lastPostId = freezed,
   }) {
     return _then(_$PostStateImpl(
       status: null == status
@@ -255,6 +270,10 @@ class __$$PostStateImplCopyWithImpl<$Res>
           ? _value.hasReachedMax
           : hasReachedMax // ignore: cast_nullable_to_non_nullable
               as bool,
+      lastPostId: freezed == lastPostId
+          ? _value.lastPostId
+          : lastPostId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -265,7 +284,8 @@ class _$PostStateImpl implements _PostState {
   const _$PostStateImpl(
       {this.status = PostStatus.initial,
       final List<PostDTO> posts = const <PostDTO>[],
-      this.hasReachedMax = false})
+      this.hasReachedMax = false,
+      this.lastPostId})
       : _posts = posts;
 
   @override
@@ -283,10 +303,12 @@ class _$PostStateImpl implements _PostState {
   @override
   @JsonKey()
   final bool hasReachedMax;
+  @override
+  final int? lastPostId;
 
   @override
   String toString() {
-    return 'PostState(status: $status, posts: $posts, hasReachedMax: $hasReachedMax)';
+    return 'PostState(status: $status, posts: $posts, hasReachedMax: $hasReachedMax, lastPostId: $lastPostId)';
   }
 
   @override
@@ -297,12 +319,14 @@ class _$PostStateImpl implements _PostState {
             (identical(other.status, status) || other.status == status) &&
             const DeepCollectionEquality().equals(other._posts, _posts) &&
             (identical(other.hasReachedMax, hasReachedMax) ||
-                other.hasReachedMax == hasReachedMax));
+                other.hasReachedMax == hasReachedMax) &&
+            (identical(other.lastPostId, lastPostId) ||
+                other.lastPostId == lastPostId));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, status,
-      const DeepCollectionEquality().hash(_posts), hasReachedMax);
+      const DeepCollectionEquality().hash(_posts), hasReachedMax, lastPostId);
 
   @JsonKey(ignore: true)
   @override
@@ -315,7 +339,8 @@ abstract class _PostState implements PostState {
   const factory _PostState(
       {final PostStatus status,
       final List<PostDTO> posts,
-      final bool hasReachedMax}) = _$PostStateImpl;
+      final bool hasReachedMax,
+      final int? lastPostId}) = _$PostStateImpl;
 
   @override
   PostStatus get status;
@@ -323,6 +348,8 @@ abstract class _PostState implements PostState {
   List<PostDTO> get posts;
   @override
   bool get hasReachedMax;
+  @override
+  int? get lastPostId;
   @override
   @JsonKey(ignore: true)
   _$$PostStateImplCopyWith<_$PostStateImpl> get copyWith =>

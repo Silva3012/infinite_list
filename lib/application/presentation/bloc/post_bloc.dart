@@ -9,8 +9,8 @@ part 'post_state.dart';
 part 'post_bloc.freezed.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
-  PostBloc() : super(PostState.initial()) {
-    final PostUseCases postUseCases = PostUseCases();
+  final PostUseCases postUseCases;
+  PostBloc({required this.postUseCases}) : super(const PostState()) {
     on<PostEvent>((event, emit) async {
       // print('Recevied event: $event');
       await event.map(postFetched: (event) async {
@@ -18,7 +18,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         if (state.hasReachedMax) return;
 
         // Emit loading state
-        emit(state.copyWith(status: PostStatus.loading));
+        emit(state.copyWith(status: PostStatus.initial));
 
         final failureOrPosts = await postUseCases.getPost();
         print(failureOrPosts.isRight());
@@ -29,9 +29,11 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         }, (posts) {
           emit(state.copyWith(
             status: PostStatus.success,
-            posts: posts.isEmpty ? state.posts : List.of(state.posts)
-              ..addAll(posts),
-            hasReachedMax: false,
+            posts: List.of(state.posts)..addAll(posts),
+            hasReachedMax: posts.isEmpty,
+            lastPostId: posts.isNotEmpty
+                ? posts.last.id ?? state.lastPostId
+                : state.lastPostId,
           ));
         });
       });

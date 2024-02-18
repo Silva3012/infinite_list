@@ -15,7 +15,7 @@ class _PostListState extends State<PostList> {
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener((_onScroll));
+    _scrollController.addListener(_onScroll);
   }
 
   @override
@@ -43,10 +43,10 @@ class _PostListState extends State<PostList> {
                   : state.posts.length + 1,
               controller: _scrollController,
             );
-          case PostStatus.loading:
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+          // case PostStatus.loading:
+          //   return const Center(
+          //     child: CircularProgressIndicator(),
+          //   );
           case PostStatus.failure:
             return const Center(child: Text('failed to fetch posts'));
         }
@@ -63,7 +63,9 @@ class _PostListState extends State<PostList> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<PostBloc>().add(const postFetchedEvent());
+    if (_isBottom) {
+      context.read<PostBloc>().add(const postFetchedEvent());
+    }
   }
 
   bool get _isBottom {
