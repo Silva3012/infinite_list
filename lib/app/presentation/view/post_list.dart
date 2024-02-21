@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:infinite_list/posts.dart';
+import 'package:infinite_list/application/bloc/post_bloc.dart';
+
+import '../widgets/widgets.dart';
 
 class PostList extends StatefulWidget {
   const PostList({super.key});
@@ -64,7 +66,7 @@ class _PostListState extends State<PostList> {
 
   void _onScroll() {
     if (_isBottom) {
-      context.read<PostBloc>().add(const postFetchedEvent());
+      context.read<PostBloc>().add(const PostEvent.onLoadMore());
     }
   }
 

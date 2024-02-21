@@ -5,24 +5,22 @@ import 'package:infinite_list/data/exceptions/exceptions.dart';
 import 'package:infinite_list/data/models/post_model.dart';
 
 abstract class PostRemoteDatasource {
-  Future<List<PostDTO>> getPostFromApi(
-      {required int startIndex, required int lastPostId});
+  Future<List<PostDTO>> getPostFromApi(int startIndex);
 }
+
+const _postLimit = 10;
 
 class PostRemoteDatasourceImpl implements PostRemoteDatasource {
   final client = http.Client();
   @override
-  Future<List<PostDTO>> getPostFromApi(
-      {required int startIndex, required int lastPostId}) async {
-    const postLimit = 20;
+  Future<List<PostDTO>> getPostFromApi(int startIndex) async {
     final response = await client.get(
       Uri.https(
         'jsonplaceholder.typicode.com',
         '/posts',
         <String, String>{
           '_start': '$startIndex',
-          '_limit': '$postLimit',
-          '_after': '$lastPostId'
+          '_limit': '$_postLimit',
         },
       ),
     );

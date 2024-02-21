@@ -1,9 +1,9 @@
 import 'package:get_it/get_it.dart';
+import 'package:infinite_list/application/bloc/post_bloc.dart';
 import 'package:infinite_list/data/datasources/post_remote_data.dart';
 import 'package:infinite_list/data/repositories/post_repository_impl.dart';
 import 'package:infinite_list/domain/repositories/post_repository.dart';
 import 'package:infinite_list/domain/usecases/post_usecases.dart';
-import 'package:infinite_list/posts.dart';
 
 final sl = GetIt.I;
 
