@@ -6,7 +6,7 @@ class PostUseCases {
   PostUseCases({required this.postRepository});
   final PostRepository postRepository;
 
-  Future<List<PostDTO>> getPost(int si) async {
-    return postRepository.getPostFromDatasource(si);
+  Future<List<PostDTO>> getPost(int startIndex) async {
+    return postRepository.getPostFromDatasource(startIndex);
   }
 }

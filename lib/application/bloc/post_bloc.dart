@@ -32,7 +32,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
                 state.copyWith(
                   isLoading: false,
                   status: PostStatus.success,
-                  posts: state.posts..addAll(posts),
+                  posts: List.of(posts)..addAll(posts),
                   hasReachedMax: posts.isEmpty,
                   lastPostId: posts.isEmpty ? 100 : posts.last.id ?? 0,
                 ),

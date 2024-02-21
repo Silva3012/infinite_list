@@ -7,8 +7,8 @@ class PostRepositoryImpl implements PostRepository {
   final PostRemoteDatasource remotePostDatasource;
 
   @override
-  Future<List<PostDTO>> getPostFromDatasource(si) async {
-    final result = await remotePostDatasource.getPostFromApi(si);
+  Future<List<PostDTO>> getPostFromDatasource(startIndex) async {
+    final result = await remotePostDatasource.getPostFromApi(startIndex);
     return result;
   }
 }
