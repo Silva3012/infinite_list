@@ -2,18 +2,18 @@ import 'package:bloc/bloc.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:infinite_list/data/models/post_model.dart';
-import 'package:infinite_list/domain/usecases/post_usecases.dart';
+import 'package:infinite_list/domain/repositories/post_repository.dart';
 
 part 'post_event.dart';
 part 'post_state.dart';
 part 'post_bloc.freezed.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
-  final PostUseCases postUseCases;
-  PostBloc({required this.postUseCases}) : super(PostState.initial()) {
+  final PostRepository postRepository;
+  PostBloc({required this.postRepository}) : super(PostState.initial()) {
     on<PostEvent>((event, emit) async {
       await event.map(onFetchInitial: (OnFetchInitial value) async {
-        final posts = await postUseCases.getPost(0);
+        final posts = await postRepository.getPostFromDatasource(0);
         emit(
           state.copyWith(
             isLoading: false,
@@ -25,7 +25,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         );
       }, onLoadMore: (OnLoadMore value) async {
         emit(state.copyWith(isLoading: true));
-        final posts = await postUseCases.getPost(state.lastPostId!);
+        final posts =
+            await postRepository.getPostFromDatasource(state.lastPostId!);
         posts.isEmpty
             ? emit(state.copyWith(hasReachedMax: true))
             : emit(

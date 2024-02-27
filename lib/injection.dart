@@ -3,16 +3,12 @@ import 'package:infinite_list/application/bloc/post_bloc.dart';
 import 'package:infinite_list/data/datasources/post_remote_data.dart';
 import 'package:infinite_list/data/repositories/post_repository_impl.dart';
 import 'package:infinite_list/domain/repositories/post_repository.dart';
-import 'package:infinite_list/domain/usecases/post_usecases.dart';
 
 final sl = GetIt.I;
 
 Future<void> init() async {
   // ! application layer
-  sl.registerFactory(() => PostBloc(postUseCases: sl()));
-
-  // ! domain layer
-  sl.registerFactory(() => PostUseCases(postRepository: sl()));
+  sl.registerFactory(() => PostBloc(postRepository: sl()));
 
   // ! data layer
   sl.registerFactory<PostRepository>(
